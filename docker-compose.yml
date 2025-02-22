@@ -1,0 +1,9 @@
+
+services:
+  server:
+    image: nojram/interaview-server:latest
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8081:8081"
