@@ -2,7 +2,8 @@
 from mdb_models.base import BaseMongoModel
 from models.student import StudentSchema, Student
 from pydantic import BaseModel
-
+from typing import List
+from pprint import pprint
 class Activities(BaseModel):
     topic : str | None
     score : int
@@ -11,16 +12,16 @@ class Activities(BaseModel):
 class StudentActivitySchema(BaseModel):
     student_info: StudentSchema
     subject : str
-    written_works : Activities
-    performance_tasks : Activities
-    exams : Activities
+    written_works : List[Activities]
+    performance_tasks : List[Activities]
+    exams : List[Activities]
 
 class OutputStudentActivitySchema(BaseModel):
     student_id : str
     subject : str
-    written_works : Activities
-    performance_tasks : Activities
-    exams : Activities
+    written_works : List[Activities]
+    performance_tasks : List[Activities]
+    exams : List[Activities]
 
 class StudentActivity(BaseMongoModel):
     
@@ -32,6 +33,7 @@ class StudentActivity(BaseMongoModel):
         Add a new activity to the student_activities collection.
         """
 
+        pprint(data)
         student = Student.find_or_create(data.student_info)
 
         activity = cls.find({'student_id': student, 'subject': data.subject})

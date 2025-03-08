@@ -29,9 +29,18 @@ async def add_student_activity(data: StudentActivitySchema):
     return {"message": "Failed to add activity."}
 
 @router.get("/students")
-async def get_students():
-    students = Student.all()
-    return [{ "id" : str(student['_id']), **{ k : v  for k, v in student.items() if k != "_id" } } for student in students.to_list()]
+async def get_students(page: int = 1):
+    students = Student.student_list(page)
+    total = Student.count()
+    last_page = (total + 9) // 10
+
+    data = [{ "id" : str(student['_id']), **{ k : v  for k, v in student.items() if k != "_id" } } for student in students.to_list()]
+    return {
+        "current_page": page,
+        "last_page": last_page,
+        "total": total,
+        "data": data
+    }
 
 @router.post("/students")
 async def add_student(data: StudentSchema):
@@ -44,7 +53,10 @@ async def add_student(data: StudentSchema):
 
 @router.get("/students/id/{student_id}")
 async def get_student(student_id: str):
+    from pprint import pprint
     student = Student.find_by_id(student_id)
+    if student is None:
+        return JSONResponse(status_code=404, content={"message": "Student not found."})
     return { "id" : str(student['_id']), **{ k : v  for k, v in student.items() if k != "_id" } }
 
 @router.post("/students/find")

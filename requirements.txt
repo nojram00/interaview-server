@@ -16,7 +16,7 @@ idna==3.10
 Jinja2==3.1.5
 markdown-it-py==3.0.0
 MarkupSafe==3.0.2
-mdb-models==2.9.9
+mdb-models==3.0.1
 mdurl==0.1.2
 pydantic==2.10.6
 pydantic_core==2.27.2

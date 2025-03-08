@@ -48,6 +48,13 @@ class Student(BaseMongoModel):
         created = cls.create_student(data)
         return str(created)
     
+    @classmethod
+    def student_list(cls, page=1):
+        """
+        Get a list of students.
+        """
+        return cls.paginate(page=page, limit=10)
+    
 if __name__ == '__main__':
     from pprint import pprint
     result = Student.find_or_create(StudentSchema(first_name='John', last_name='Doe II', section='A'))
